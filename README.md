@@ -65,7 +65,7 @@ _Si van a crear mas endpoints como el login o registrarse recuerden actualizar p
 - [✅] Incluir usuarios de prueba (`user`, `tech`) y contraseñas.
 
 ## Capturas y aclaraciones
-### Funcionó correctamente, pero al final detectamos que habíamos subido un commit desde otra computadora donde se agregó un archivo duplicado. El archivo SecurityBean estaba repetido, y al eliminarlo, la aplicación comenzó a ejecutarse sin problemas.
+### Funcionó correctamente, pero al final detectamos que habíamos subido un commit desde otra computadora donde se agregó un archivo duplicado. El archivo SecurityBean de la carpeta config estaba repetido su implementacion estaba en otro lado, y al eliminarlo, la aplicación comenzó a ejecutarse sin problemas.
 ![Imagen de WhatsApp 2025-07-08 a las 20 45 18_8450c21c](https://github.com/user-attachments/assets/d81c7871-c0d1-4393-b7f3-96dc71dcf52d)
 ![Imagen de WhatsApp 2025-07-08 a las 20 46 30_49531ccf](https://github.com/user-attachments/assets/f4cf93fe-484b-487c-b5be-5a9f4ced2d39)
 ![Imagen de WhatsApp 2025-07-08 a las 20 47 38_e6fc5581](https://github.com/user-attachments/assets/533d0c31-3ef4-4351-9986-a62c2db9c7f4)
