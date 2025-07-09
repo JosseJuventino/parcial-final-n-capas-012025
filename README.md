@@ -1,67 +1,118 @@
-# Parcial Final Programación N-Capas – (Seguridad con Spring Security + JWT)
+# Sistema de Soporte Técnico
 
-Este repositorio contiene un proyecto para evaluar y practicar los conceptos de seguridad en aplicaciones Spring Boot usando JWT, roles y Docker.
+Este proyecto simula un sistema donde los usuarios pueden crear solicitudes de soporte (tickets) y los técnicos pueden gestionarlas. La aplicación está desarrollada con Spring Boot y utiliza PostgreSQL como base de datos.
 
-### Estudiantes
-- **Nombre del estudiante 1**: José Juventino Castillo Hernández - 00048322
-- **Nombre del estudiante 2**: German David Santos Hernández - 00059122
-- Sección:  2
+## Creado por
+
+| Usuario     | Carnet   | 
+|-------------|--------|
+| José Juventino Castillo Hernández       | 00048322   |
+| Germán David Santos Hernández       | 00059122   |
+
 ---
 
-## Sistema de Soporte Técnico
+## 🐳 Ejecución con Docker y Docker Compose
 
-### Descripción
-Simula un sistema donde los usuarios pueden crear solicitudes de soporte (tickets) y los técnicos pueden gestionarlas. Actualmente **no tiene seguridad implementada**.
+### 📦 Requisitos
 
-Su tarea es **agregar autenticación y autorización** utilizando **Spring Security + JWT**, y contenerizar la aplicación con Docker.
+- Docker
+- Docker Compose
+- Java 21 (para desarrollo local)
+- Maven (opcional si usas el wrapper `./mvnw`)
 
-### Requisitos generales
+---
 
-- Proyecto funcional al ser clonado y ejecutado con Docker.
-- Uso de PostgreSQL (ya incluido en docker-compose).
-- Seguridad implementada con JWT.
-- Roles `USER` y `TECH`.
-- Acceso restringido según el rol del usuario.
-- Evidencia de funcionamiento (colección de Postman/Insomnia/Bruno o capturas de pantalla).
+## 🚀 Pasos para levantar el entorno
 
-**Nota: El proyecto ya tiene una estructura básica de Spring Boot con endpoints funcionales para manejar tickets. No es necesario modificar la lógica de negocio, solo agregar seguridad. Ademas se inclye un postman collection para probar los endpoints. **
+### 1. Clonar el repositorio
 
-_Si van a crear mas endpoints como el login o registrarse recuerden actualizar postman/insomnia/bruno collection_
+```bash
+git clone https://github.com/JosseJuventino/parcial-final-n-capas-012025.git
+cd parcial-final-n-capas-012025
+```
 
-### Partes de desarrollo
+### 2. Generar el `.jar` del proyecto
 
-#### Parte 1: Implementar login con JWT
-- [ ] Crear endpoint `/auth/login`.
-- [ ] Validar usuario y contraseña (puede estar en memoria o en BD).
-- [ ] Retornar JWT firmado.
+```bash
+./mvnw clean package -DskipTests
+```
 
-#### Parte 2: Configurar filtros y validación del token
-- [ ] Crear filtro para validar el token en cada solicitud.
-- [ ] Extraer usuario desde el JWT.
-- [ ] Añadir a contexto de seguridad de Spring.
+Esto creará un archivo `.jar` dentro de la carpeta `target/`.
 
-#### Parte 3: Proteger endpoints con Spring Security
-- [ ] Permitir solo el acceso al login sin token.
-- [ ] Proteger todos los demás endpoints.
-- [ ] Manejar errores de autorización adecuadamente.
+---
 
-#### Parte 4: Aplicar roles a los endpoints
+### 3. Levantar la aplicación con Docker
 
-| Rol   | Acceso permitido                                 |
-|--------|--------------------------------------------------|
-| USER  | Crear tickets, ver solo sus tickets              |
-| TECH  | Ver todos los tickets, actualizar estado         |
+```bash
+docker compose up --build
+```
 
-- [ ] Usar `@PreAuthorize` o reglas en el `SecurityFilterChain`.
-- [ ] Validar que un USER solo vea sus tickets.
-- [ ] Validar que solo un TECH pueda modificar tickets.
+Esto hará lo siguiente:
 
-#### Parte 5: Agregar Docker
-- [ ] `Dockerfile` funcional para la aplicación.
-- [ ] `docker-compose.yml` que levante la app y la base de datos.
-- [ ] Documentar cómo levantar el entorno (`docker compose up`).
+- Compilar y construir la imagen de la app con Java 21.
+- Levantar una base de datos PostgreSQL con los datos necesarios.
+- Iniciar ambos contenedores en red.
 
-#### Parte 6: Evidencia de pruebas
-- [ ] Probar todos los flujos con Postman/Insomnia/Bruno.
-- [ ] Mostrar que los roles se comportan correctamente.
-- [ ] Incluir usuarios de prueba (`user`, `tech`) y contraseñas.
+---
+
+## ⚙️ Configuración usada
+
+### Base de Datos (PostgreSQL)
+
+- **DB Name**: `supportdb`
+- **Usuario**: `postgres`
+- **Contraseña**: `root`
+- **Puerto expuesto**: `5432`
+
+### Aplicación Spring Boot
+
+- **Puerto expuesto**: `8080`
+- **Conexión a DB interna (Usando docker)**: `jdbc:postgresql://db:5432/supportdb`
+- **Conexión local**: `jdbc:postgresql://localhost:5432/supportdb`
+
+
+---
+
+## 🔍 Endpoints y pruebas
+
+Usa la colección de Postman/Insomnia incluida para probar los endpoints de autenticación, creación de tickets y funcionalidades de roles.
+
+---
+
+## 🧯 Para detener los contenedores
+
+```bash
+docker compose down
+```
+
+Si quieres eliminar también los volúmenes de la base de datos:
+
+```bash
+docker compose down -v
+```
+
+---
+
+## 📁 Estructura del proyecto relevante
+
+```
+.
+├── Dockerfile
+├── docker-compose.yml
+├── src/
+├── target/
+│   └── parcial-final-n-capas-0.0.1-SNAPSHOT.jar
+├── pom.xml
+└── README.md
+```
+
+---
+
+## 🧪 Usuarios de prueba (ejemplo)
+
+| Usuario     | Rol   | Contraseña |
+|-------------|--------|------------|
+| user1       | USER   | user123    |
+| tech1       | TECH   | tech123    |
+
+---

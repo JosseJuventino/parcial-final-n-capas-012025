@@ -8,7 +8,7 @@ app:
     expiration-time: 86400000
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/supportdb
+    url: jdbc:postgresql://db:5432/supportdb
     username: postgres
     password: root
   jpa:
