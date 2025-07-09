@@ -1,3 +1,11 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+app:
+  jwt:
+    secret: fWGy30lAyaSNRLLDq2Lau0LJHkruRPjYem1Jpnt3Q+c=
+    expiration-time: 86400000
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/supportdb

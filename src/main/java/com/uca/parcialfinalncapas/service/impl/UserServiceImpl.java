@@ -9,6 +9,7 @@ import com.uca.parcialfinalncapas.repository.UserRepository;
 import com.uca.parcialfinalncapas.service.UserService;
 import com.uca.parcialfinalncapas.utils.mappers.UserMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,30 +18,42 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse findByCorreo(String correo) {
-        return UserMapper.toDTO(userRepository.findByCorreo(correo)
-                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con correo: " + correo)));
+        User u = userRepository.findByCorreo(correo)
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con correo: " + correo));
+        return UserMapper.toDTO(u);
     }
 
     @Override
-    public UserResponse save(UserCreateRequest user) {
-
-        if (userRepository.findByCorreo(user.getCorreo()).isPresent()) {
-            throw new UserNotFoundException("Ya existe un usuario con el correo: " + user.getCorreo());
+    public UserResponse save(UserCreateRequest req) {
+        if (userRepository.findByCorreo(req.getCorreo()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un usuario con el correo: " + req.getCorreo());
         }
 
-        return UserMapper.toDTO(userRepository.save(UserMapper.toEntityCreate(user)));
+        User toSave = UserMapper.toEntityCreate(req);
+        toSave.setPassword(passwordEncoder.encode(req.getPassword()));
+
+        User saved = userRepository.save(toSave);
+        return UserMapper.toDTO(saved);
     }
 
     @Override
-    public UserResponse update(UserUpdateRequest user) {
-        if (userRepository.findById(user.getId()).isEmpty()) {
-            throw new UserNotFoundException("No se encontró un usuario con el ID: " + user.getId());
+    public UserResponse update(UserUpdateRequest req) {
+        User existing = userRepository.findById(req.getId())
+                .orElseThrow(() -> new UserNotFoundException("No se encontró un usuario con el ID: " + req.getId()));
+
+        existing.setNombre(req.getNombre());
+        existing.setNombreRol(req.getNombreRol());
+
+        if (req.getPassword() != null && !req.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(req.getPassword()));
         }
 
-        return UserMapper.toDTO(userRepository.save(UserMapper.toEntityUpdate(user)));
+        User updated = userRepository.save(existing);
+        return UserMapper.toDTO(updated);
     }
 
     @Override
@@ -53,6 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> findAll() {
-        return UserMapper.toDTOList(userRepository.findAll());
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toDTO)
+                .toList();
     }
 }
