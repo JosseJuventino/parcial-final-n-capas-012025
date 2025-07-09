@@ -3,7 +3,7 @@
 Este repositorio contiene un proyecto para evaluar y practicar los conceptos de seguridad en aplicaciones Spring Boot usando JWT, roles y Docker.
 
 ### Estudiantes
-- **Nombre del estudiante **: José Juventino Castillo Hernández - 00048322
+- **Nombre del estudiante 1**: José Juventino Castillo Hernández - 00048322
 - **Nombre del estudiante 2**: German David Santos Hernández - 00059122
 - Sección:  2
 ---
